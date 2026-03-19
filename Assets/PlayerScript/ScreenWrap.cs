@@ -19,12 +19,10 @@ public class ScreenWrap : MonoBehaviour
         Vector3 camPos = cam.transform.position;
         Vector3 pos = transform.position;
 
-
         if (pos.x > camPos.x + width / 2f)
             pos.x -= width;
         else if (pos.x < camPos.x - width / 2f)
             pos.x += width;
-
 
         if (pos.y > camPos.y + height / 2f)
             pos.y -= height;

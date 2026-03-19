@@ -5,7 +5,6 @@ public class Movement : MonoBehaviour
 {
     public float Speed = 10f;
     public float JumpForce = 5f;
-
     public float maxFallSpeed = -40f;
 
     [Header("Jump Tuning")]
@@ -31,29 +30,23 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        isGrounded = Physics2D.OverlapCircle(
-            groundCheck.position,
-            groundRadius,
-            groundLayer
-        );
-
-        if (jumpRequested && isGrounded)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-            rb.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
-        }
-
-        jumpRequested = false;
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
     }
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(
-            movementInput.x * Speed,
-            rb.linearVelocity.y
-        );
+        rb.linearVelocity = new Vector2(movementInput.x * Speed, rb.linearVelocity.y);
 
-        
+        if (jumpRequested)
+        {
+            if (isGrounded)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+                rb.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+            }
+            jumpRequested = false;
+        }
+
         if (rb.linearVelocity.y < 0)
         {
             rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.fixedDeltaTime;
@@ -63,13 +56,9 @@ public class Movement : MonoBehaviour
             rb.linearVelocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.fixedDeltaTime;
         }
 
-        
         if (rb.linearVelocity.y < maxFallSpeed)
         {
-            rb.linearVelocity = new Vector2(
-                rb.linearVelocity.x,
-                maxFallSpeed
-            );
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxFallSpeed);
         }
     }
 

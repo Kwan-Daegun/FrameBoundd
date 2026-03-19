@@ -1,11 +1,13 @@
 using UnityEngine;
 using Unity.Cinemachine;
+
 public class CameraFreeze : MonoBehaviour
 {
     public CinemachineCamera vcam;
     public Transform player;
 
     bool isFrozen;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
@@ -13,6 +15,7 @@ public class CameraFreeze : MonoBehaviour
             ToggleFreeze();
         }
     }
+
     public void ToggleFreeze()
     {
         if (isFrozen)

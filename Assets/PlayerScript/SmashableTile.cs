@@ -1,8 +1,8 @@
 using UnityEngine;
 using Unity.Cinemachine;
+
 public class SmashableTile : MonoBehaviour
 {
-  public float breakVelocity = -10f;
     public GameObject breakEffect;
     public CinemachineImpulseSource impulseSource;
 
@@ -11,27 +11,34 @@ public class SmashableTile : MonoBehaviour
         if (!collision.gameObject.CompareTag("Player"))
             return;
 
-        float impactSpeed = collision.relativeVelocity.y;
+        Movement playerMovement = collision.gameObject.GetComponent<Movement>();
 
-        if (impactSpeed < breakVelocity)
+        if (playerMovement != null)
         {
-            if (breakEffect != null)
+            float impactSpeed = collision.relativeVelocity.magnitude;
+            float requiredSpeed = Mathf.Abs(playerMovement.maxFallSpeed) * 0.95f;
+
+            if (impactSpeed >= requiredSpeed)
             {
-                GameObject effect = Instantiate(
-                    breakEffect,
-                    transform.position,
-                    Quaternion.identity
-                );
+                if (breakEffect != null)
+                {
+                    GameObject effect = Instantiate(breakEffect, transform.position, Quaternion.identity);
+                    Destroy(effect, 2f);
+                }
 
-                Destroy(effect, 2f);
+                if (impulseSource != null)
+                {
+                    impulseSource.GenerateImpulse();
+                }
+
+                Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+                if (playerRb != null)
+                {
+                    playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, playerMovement.maxFallSpeed);
+                }
+
+                Destroy(gameObject);
             }
-
-            if (impulseSource != null)
-            {
-                impulseSource.GenerateImpulse();
-            }
-
-            Destroy(gameObject);
         }
     }
 }
