@@ -22,7 +22,9 @@ public class SmashableTile : MonoBehaviour
             {
                 if (breakEffect != null)
                 {
-                    GameObject effect = Instantiate(breakEffect, transform.position, Quaternion.identity);
+                    Vector2 spawnPos = collision.GetContact(0).point;
+                    GameObject effect = Instantiate(breakEffect, spawnPos, Quaternion.identity);
+                    effect.transform.localScale = Vector3.one;
                     Destroy(effect, 2f);
                 }
 

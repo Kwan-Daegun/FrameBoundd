@@ -23,14 +23,26 @@ public class Movement : MonoBehaviour
 
     private bool isGrounded;
 
+    
+    private Vector2 lastSafePosition;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        
+        lastSafePosition = transform.position;
     }
 
     void Update()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
+
+        
+        if (isGrounded)
+        {
+            lastSafePosition = transform.position;
+        }
     }
 
     void FixedUpdate()
@@ -79,6 +91,14 @@ public class Movement : MonoBehaviour
         {
             jumpHeld = false;
         }
+    }
+
+    public void Respawn()
+    {
+        rb.linearVelocity = Vector2.zero;
+
+        
+        transform.position = lastSafePosition + Vector2.up * 0.1f;
     }
 
     void OnDrawGizmosSelected()
