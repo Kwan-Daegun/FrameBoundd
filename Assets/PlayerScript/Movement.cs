@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class Movement : MonoBehaviour
 {
@@ -12,10 +13,8 @@ public class Movement : MonoBehaviour
     public float lowJumpMultiplier = 2f;
 
     private Rigidbody2D rb;
-    private Vector2 movementInput;
     private bool jumpRequested;
     private bool jumpHeld;
-
 
     private float moveX;
 
@@ -27,6 +26,14 @@ public class Movement : MonoBehaviour
     private bool isGrounded;
 
     private Vector2 lastSafePosition;
+
+    
+    private float jumpStartY;
+    private float highestY;
+    private bool isJumping;
+
+    [Header("UI")]
+    public TextMeshProUGUI jumpHeightText;
 
     void Start()
     {
@@ -41,12 +48,28 @@ public class Movement : MonoBehaviour
         if (isGrounded)
         {
             lastSafePosition = transform.position;
+
+            
+            if (isJumping)
+            {
+                float jumpHeight = highestY - jumpStartY;
+                jumpHeightText.text = "Jump Height: " + jumpHeight.ToString("F2");
+                isJumping = false;
+            }
+        }
+
+        
+        if (isJumping)
+        {
+            if (transform.position.y > highestY)
+            {
+                highestY = transform.position.y;
+            }
         }
     }
 
     void FixedUpdate()
     {
-
         rb.linearVelocity = new Vector2(moveX * Speed, rb.linearVelocity.y);
 
         if (jumpRequested)
@@ -55,6 +78,11 @@ public class Movement : MonoBehaviour
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
                 rb.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+
+                
+                jumpStartY = transform.position.y;
+                highestY = jumpStartY;
+                isJumping = true;
             }
             jumpRequested = false;
         }
@@ -73,7 +101,6 @@ public class Movement : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxFallSpeed);
         }
     }
-
 
     public void Move(InputAction.CallbackContext context)
     {
