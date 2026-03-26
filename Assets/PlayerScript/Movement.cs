@@ -16,6 +16,9 @@ public class Movement : MonoBehaviour
     private bool jumpRequested;
     private bool jumpHeld;
 
+
+    private float moveX;
+
     [Header("Ground Check")]
     public Transform groundCheck;
     public float groundRadius = 0.2f;
@@ -23,14 +26,11 @@ public class Movement : MonoBehaviour
 
     private bool isGrounded;
 
-    
     private Vector2 lastSafePosition;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
-        
         lastSafePosition = transform.position;
     }
 
@@ -38,7 +38,6 @@ public class Movement : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
 
-        
         if (isGrounded)
         {
             lastSafePosition = transform.position;
@@ -47,7 +46,8 @@ public class Movement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(movementInput.x * Speed, rb.linearVelocity.y);
+
+        rb.linearVelocity = new Vector2(moveX * Speed, rb.linearVelocity.y);
 
         if (jumpRequested)
         {
@@ -74,9 +74,17 @@ public class Movement : MonoBehaviour
         }
     }
 
+
     public void Move(InputAction.CallbackContext context)
     {
-        movementInput = context.ReadValue<Vector2>();
+        if (context.performed)
+        {
+            moveX = context.ReadValue<Vector2>().x;
+        }
+        else if (context.canceled)
+        {
+            moveX = 0f;
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -96,8 +104,6 @@ public class Movement : MonoBehaviour
     public void Respawn()
     {
         rb.linearVelocity = Vector2.zero;
-
-        
         transform.position = lastSafePosition + Vector2.up * 0.1f;
     }
 

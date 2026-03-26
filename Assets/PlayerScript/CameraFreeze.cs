@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using UnityEngine.InputSystem;
 
 public class CameraFreeze : MonoBehaviour
 {
@@ -8,9 +9,10 @@ public class CameraFreeze : MonoBehaviour
 
     bool isFrozen;
 
-    void Update()
+    
+    public void OnFreeze(InputAction.CallbackContext context)
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (context.performed)
         {
             ToggleFreeze();
         }
