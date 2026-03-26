@@ -156,7 +156,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 232, y: 150}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &177984248
 MonoBehaviour:
@@ -1663,7 +1663,7 @@ MonoBehaviour:
   - {fileID: -4973719480991979858, guid: 4e7f5e141c92b794fb1ca764cad6ac45, type: 3}
   - {fileID: -856149755822829703, guid: 4e7f5e141c92b794fb1ca764cad6ac45, type: 3}
   - {fileID: 9005231359350743733, guid: 4e7f5e141c92b794fb1ca764cad6ac45, type: 3}
-  jumpSprite: {fileID: -4508140695509116639, guid: 4e7f5e141c92b794fb1ca764cad6ac45, type: 3}
+  jumpSprite: {fileID: 5167926156991472794, guid: 4e7f5e141c92b794fb1ca764cad6ac45, type: 3}
   fallSprite: {fileID: 9005231359350743733, guid: 4e7f5e141c92b794fb1ca764cad6ac45, type: 3}
   animationSpeed: 10
 --- !u!1 &841357038
@@ -1769,7 +1769,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 1835, y: 150}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &875205797
 MonoBehaviour:
@@ -2035,7 +2035,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 400, y: 150}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &939630406
 MonoBehaviour:
@@ -2216,7 +2216,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 1609, y: 150}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1331041870
 MonoBehaviour:
@@ -2560,8 +2560,8 @@ Transform:
   m_GameObject: {fileID: 1570228787}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.03, y: -10.504, z: 0}
-  m_LocalScale: {x: 0.4066101, y: 0.4066101, z: 0.4066101}
+  m_LocalPosition: {x: 22.153, y: -9.96, z: 0}
+  m_LocalScale: {x: 0.8414796, y: 0.8414796, z: 0.8414796}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
