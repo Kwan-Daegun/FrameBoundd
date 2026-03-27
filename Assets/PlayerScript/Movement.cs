@@ -24,6 +24,7 @@ public class Movement : MonoBehaviour
     public LayerMask groundLayer;
 
     private bool isGrounded;
+    private bool wasGrounded;
 
     private Vector2 lastSafePosition;
 
@@ -39,33 +40,44 @@ public class Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         lastSafePosition = transform.position;
+        isGrounded = CheckGrounded();
+        wasGrounded = isGrounded;
     }
 
     void Update()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
+        isGrounded = CheckGrounded();
 
         if (isGrounded)
         {
             lastSafePosition = transform.position;
-
-            
-            if (isJumping)
-            {
-                float jumpHeight = highestY - jumpStartY;
-                jumpHeightText.text = "Jump Height: " + jumpHeight.ToString("F2");
-                isJumping = false;
-            }
         }
 
-        
         if (isJumping)
         {
-            if (transform.position.y > highestY)
+            highestY = Mathf.Max(highestY, transform.position.y);
+
+            if (jumpHeightText != null)
             {
-                highestY = transform.position.y;
+                float currentJumpHeight = Mathf.Max(0f, highestY - jumpStartY);
+                jumpHeightText.text = "Jump Height: " + currentJumpHeight.ToString("F2");
             }
         }
+
+        // Finalize jump height only after a real landing transition.
+        if (!wasGrounded && isGrounded && isJumping)
+        {
+            float jumpHeight = Mathf.Max(0f, highestY - jumpStartY);
+
+            if (jumpHeightText != null)
+            {
+                jumpHeightText.text = "Jump Height: " + jumpHeight.ToString("F2");
+            }
+
+            isJumping = false;
+        }
+
+        wasGrounded = isGrounded;
     }
 
     void FixedUpdate()
@@ -132,6 +144,13 @@ public class Movement : MonoBehaviour
     {
         rb.linearVelocity = Vector2.zero;
         transform.position = lastSafePosition + Vector2.up * 0.1f;
+        isJumping = false;
+        jumpRequested = false;
+        jumpHeld = false;
+        jumpStartY = transform.position.y;
+        highestY = jumpStartY;
+        isGrounded = CheckGrounded();
+        wasGrounded = isGrounded;
     }
 
     void OnDrawGizmosSelected()
@@ -140,5 +159,15 @@ public class Movement : MonoBehaviour
 
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
+    }
+
+    private bool CheckGrounded()
+    {
+        if (groundCheck == null)
+        {
+            return false;
+        }
+
+        return Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
     }
 }
