@@ -60,7 +60,35 @@ public class MenuScript : MonoBehaviour
             yield return null;
         }
     }
+    public void BackToHome(string homeSceneName = "MainMenu")
+    {
+        if (isLoading)
+        {
+            Debug.LogWarning("[Menu] Load already in progress.");
+            return;
+        }
 
+        if (string.IsNullOrWhiteSpace(homeSceneName))
+        {
+            Debug.LogError("[Menu] Home scene name is null or empty.");
+            return;
+        }
+
+        if (!Application.CanStreamedLevelBeLoaded(homeSceneName))
+        {
+            Debug.LogError($"[Menu] Scene '{homeSceneName}' is not in Build Settings.");
+            return;
+        }
+
+        isLoading = true;
+
+        Debug.Log("[Menu] Returning to Home: " + homeSceneName);
+
+        
+        SceneLoader.TargetSceneName = homeSceneName;
+
+        SceneManager.LoadScene("LoadingScene");
+    }
     public void QuitGame()
     {
         Debug.Log("[Menu] Quit requested.");
