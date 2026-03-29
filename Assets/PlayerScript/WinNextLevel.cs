@@ -20,16 +20,10 @@ public class WinNextLevel : MonoBehaviour
             return;
         }
 
-        StartCoroutine(LoadNextLevel());
-    }
+        
+        SceneLoader.TargetSceneName = nextLevelName;
 
-    private System.Collections.IEnumerator LoadNextLevel()
-    {
-        AsyncOperation op = SceneManager.LoadSceneAsync(nextLevelName);
-
-        while (!op.isDone)
-        {
-            yield return null;
-        }
+        
+        SceneManager.LoadScene("LoadingScene");
     }
 }
